@@ -2,8 +2,8 @@ require 'sinatra'
 require 'net/https'
 require 'json'
 
-$LOAD_PATH << '.'
-require 'appConfig'
+$LOAD_PATH << './config'
+require 'AppConfig'
 
 # Config param
 CLIENT_ID = AppConfig::CLIENT_ID
