@@ -1,0 +1,99 @@
+<body onload="initialize()">
+
+    <!-- Navbar
+    ================================================== -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="./index.html">MapMyCheckins</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="">
+                <a href="./">Home</a>
+              </li>
+              <li class="active">
+                <a href="./app">App</a>
+              </li>
+              <li class="">
+                <a href="https://github.com/vjo/MapMyCheckin">GitHub project</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content
+    ================================================== -->
+    <div class="container">
+			<div class="map" id="map_canvas"></div>
+		</div>
+
+		<!-- Footer
+    ================================================== -->
+    <footer class="footer">
+      <div class="container">
+        <p class="pull-right"><img src="/img/poweredByFoursquare_gray.png"></p>
+        <p>Designed and built with fun by <a href="http://twitter.com/y3ty" target="_blank">@y3ty</a>.</p>
+      </div>
+    </footer>
+
+    <!-- JavaScript
+    ================================================== -->
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBcoFFievZThKoSN-zvuL871bZfCNVGYBs&sensor=false"></script>
+    <script type="text/javascript" src="/js/markerclusterer_packed.js"></script>
+    <script type="text/javascript" src="/js/infobubble-compiled.js"></script>
+    <script type="text/javascript" src="/js/spahql-min.js"></script>
+
+		<script type="text/javascript">
+			var checkins = new Array();
+
+			function initialize() {
+			  var mapOptions = {
+			    zoom: 2,
+			    center: new google.maps.LatLng(48.853, 2.376),
+			    mapTypeId: google.maps.MapTypeId.ROADMAP
+			  }
+			  var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+				
+				var markers = parseJSON(map);
+				var markerClusterer = new MarkerClusterer(map, markers, { maxZoom: 8 });
+			}
+
+		  function parseJSON(map) {
+		  	var db = SpahQL.db(<%= @venues %>);
+				var items = db.select("/response/venues/items/*");
+				var tab = items.values();
+				var markers = [];
+
+				for(i=0; i<items.length; i++) {
+					// old hack
+					//checkins[i] = [tab[i].venue.name, tab[i].venue.location.lat, tab[i].venue.location.lng, tab[i].beenHere];
+					var marker = new google.maps.Marker({
+		        position: new google.maps.LatLng(tab[i].venue.location.lat, tab[i].venue.location.lng),
+		        map: map,
+			      title: tab[i].venue.name
+			    });
+
+					var infoBubble = new InfoBubble({
+          	content: tab[i].venue.name
+          });
+					//infoBubble.open(map, marker);
+					google.maps.event.addListener(marker, 'click', function() {
+          	if (!infoBubble.isOpen()) {
+            	infoBubble.open(map, marker);
+          	}
+          });
+
+					markers.push(marker);
+				}
+
+				return markers;
+			}	
+		</script>
+</body>

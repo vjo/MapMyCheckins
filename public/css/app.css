@@ -1,0 +1,33 @@
+@import url(http://fonts.googleapis.com/css?family=Lobster);
+
+h1 {
+	font-size: 2em;
+}
+
+.bighead {
+	font-size: 2em;
+	background: url("../img/map.png") no-repeat scroll center center transparent;
+	background-size: 100%;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2) inset, 0 -3px 7px rgba(0, 0, 0, 0.2) inset;
+    color: #FFFFFF;
+    padding: 220px 0;
+    position: relative;
+    text-align: center;
+    text-shadow: 0 0px 30px rgba(0, 0, 0, 1), 0 0px 20px rgba(0, 0, 0, 1);
+}
+
+.bighead span {
+	font-family: 'Lobster', sans-serif;
+	font-weight: 400;
+}
+
+.map {
+	width:100%; 
+	height:520px; 
+	margin:auto;
+	margin-top: 40px;
+}
+
+footer img {
+	width: 260px;
+}
