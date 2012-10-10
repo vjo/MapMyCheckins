@@ -1,5 +1,4 @@
 module AppConfig
-# register your app on https://fr.foursquare.com/developers/apps
 	CLIENT_ID = ""
 	CLIENT_SECRET = ""
 	REDIRECT_URI = ""
