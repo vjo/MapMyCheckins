@@ -84,6 +84,7 @@
           	content: tab[i].venue.name
           });
 					//infoBubble.open(map, marker);
+          // TODO infoBubble not working as expected
 					google.maps.event.addListener(marker, 'click', function() {
           	if (!infoBubble.isOpen()) {
             	infoBubble.open(map, marker);
