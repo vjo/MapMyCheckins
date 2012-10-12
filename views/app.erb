@@ -20,7 +20,7 @@
                 <a href="./app">App</a>
               </li>
               <li class="">
-                <a href="https://github.com/vjo/MapMyCheckin">GitHub project</a>
+                <a href="https://github.com/vjo/MapMyCheckins">GitHub project</a>
               </li>
             </ul>
           </div>
@@ -47,7 +47,6 @@
     ================================================== -->
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBcoFFievZThKoSN-zvuL871bZfCNVGYBs&sensor=false"></script>
     <script type="text/javascript" src="/js/markerclusterer_packed.js"></script>
-    <script type="text/javascript" src="/js/infobubble-compiled.js"></script>
     <script type="text/javascript" src="/js/spahql-min.js"></script>
 
 		<script type="text/javascript">
@@ -72,29 +71,27 @@
 				var markers = [];
 
 				for(i=0; i<items.length; i++) {
-					// old hack
-					//checkins[i] = [tab[i].venue.name, tab[i].venue.location.lat, tab[i].venue.location.lng, tab[i].beenHere];
 					var marker = new google.maps.Marker({
 		        position: new google.maps.LatLng(tab[i].venue.location.lat, tab[i].venue.location.lng),
 		        map: map,
 			      title: tab[i].venue.name
 			    });
 
-					var infoBubble = new InfoBubble({
-          	content: tab[i].venue.name
-          });
-					//infoBubble.open(map, marker);
-          // TODO infoBubble not working as expected
-					google.maps.event.addListener(marker, 'click', function() {
-          	if (!infoBubble.isOpen()) {
-            	infoBubble.open(map, marker);
-          	}
+          var infowindow = new google.maps.InfoWindow({
+            content: tab[i].venue.name + "<br/> you've been here " + tab[i].beenHere + " times"
           });
 
+          makeInfoWindowEvent(map, infowindow, marker);
 					markers.push(marker);
 				}
 
 				return markers;
-			}	
+			}
+
+      function makeInfoWindowEvent(map, infowindow, marker) {
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.open(map, marker);
+        });
+      }	
 		</script>
 </body>
