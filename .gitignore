@@ -9,6 +9,6 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
-#    Config file    #
+#    Config files   #
 #####################
-AppConfig.rb
+config/*
