@@ -50,7 +50,11 @@
     <script type="text/javascript" src="/js/spahql-min.js"></script>
 
 		<script type="text/javascript">
+
+// http://jamestombs.co.uk/2011-05-05/creating-markers-info-windows-using-google-maps-javascript-api-v3
+
 			var checkins = new Array();
+      var curr_infw;
 
 			function initialize() {
 			  var mapOptions = {
@@ -60,15 +64,22 @@
 			  }
 			  var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 				
-				var markers = parseJSON(map);
-				var markerClusterer = new MarkerClusterer(map, markers, { maxZoom: 8 });
+				var items = parseJSON();
+        var markers = createMarkers(map, items);
+				var markerClusterer = new MarkerClusterer(map, markers, { maxZoom: 8 }); // group markers in clusters
 			}
 
-		  function parseJSON(map) {
+		  function parseJSON() {
 		  	var db = SpahQL.db(<%= @venues %>);
 				var items = db.select("/response/venues/items/*");
-				var tab = items.values();
-				var markers = [];
+				//var tab = items.values();
+        return items.values();
+      }
+				
+
+      function createMarkers(map, items) {
+        var markers = [];
+        var tab = items.values();
 
 				for(i=0; i<items.length; i++) {
 					var marker = new google.maps.Marker({
@@ -78,7 +89,9 @@
 			    });
 
           var infowindow = new google.maps.InfoWindow({
-            content: tab[i].venue.name + "<br/> you've been here " + tab[i].beenHere + " times"
+            content: "<b>" + tab[i].venue.name + 
+                      "</b><br/> you came here " + tab[i].beenHere + (tab[i].beenHere > 1 ? " times" : " time") +
+                      "<br/><a href=\"#\">more stats</a>"
           });
 
           makeInfoWindowEvent(map, infowindow, marker);
@@ -89,7 +102,11 @@
 			}
 
       function makeInfoWindowEvent(map, infowindow, marker) {
-        google.maps.event.addListener(marker, 'click', function() {
+        google.maps.event.addListener(marker, 'click', function() {       
+          // using curr_infw var is a little trick to close previous InfoWindow when opening a new
+          if(curr_infw) { curr_infw.close();}
+          curr_infw = infowindow;
+
           infowindow.open(map, marker);
         });
       }	

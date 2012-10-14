@@ -62,6 +62,44 @@ get '/app' do
 	end
 end
 
+get '/test' do	
+	if session[:token]
+		checkin = getJSON("https://api.foursquare.com//v2/users/self/checkins?oauth_token=" + session[:token] + "&limit=1")
+		nbCheckins = JSON.parse(checkin)['response']['checkins']['count'] # here i have the total number of checkins
+		
+		limit = 250
+		checkins = []
+
+		for i in 0..(nbCheckins / limit)
+			result = getJSON("https://api.foursquare.com//v2/users/self/checkins?oauth_token=" + session[:token] + "&offset=#{i*250}&limit=#{limit}")
+   		puts "Get checkins from #{i*250} to #{(i+1)*250}"
+
+   		JSON.parse(result)['response']['checkins']['items'].each do |checkin|
+   			checkins.push checkin
+   		end
+		end
+		
+		#puts "Checkins : #{checkins.length}"
+
+
+		checkinDates = []
+		checkins.each do |checkin|
+			checkin['venue']['id'] == "4beba7896295c9b684fe8708" ? (checkinDates.push checkin['createdAt']) : nil
+		end
+
+		checkinDates.each do |date|
+			puts "4beba7896295c9b684fe8708 : " + Time.at(date).to_s
+		end
+		#puts @checkins
+		#erb :test
+
+		# now use d3js to make nice graph
+
+	else
+		"Error: something strange happened here"
+	end
+end
+
 def getJSON(url)
 	uri = URI.parse(url + "&v=" + VERSION)
 	http = Net::HTTP.new(uri.host, uri.port)

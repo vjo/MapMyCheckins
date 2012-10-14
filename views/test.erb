@@ -1,0 +1,14 @@
+<body>
+	<script type="text/javascript" src="/js/spahql-min.js"></script>
+<script type="text/javascript">
+
+
+	var db = SpahQL.db(<%= @checkins %>);
+	var items = db.select("/response/checkins/items/*");
+	//var tab = items.values();
+//return items.values();
+alert(items.length);
+
+
+</script>
+</body>
