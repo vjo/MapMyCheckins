@@ -94,6 +94,7 @@ get '/test' do
 		#erb :test
 
 		# now use d3js to make nice graph
+		# http://square.github.com/crossfilter/
 
 	else
 		"Error: something strange happened here"

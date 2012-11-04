@@ -72,8 +72,8 @@
 		  function parseJSON() {
 		  	var db = SpahQL.db(<%= @venues %>);
 				var items = db.select("/response/venues/items/*");
-				//var tab = items.values();
-        return items.values();
+        
+        return items;
       }
 				
 
