@@ -2,6 +2,7 @@ MapMyCheckins
 =============
 
 Side project to discover FourSquare API and playing with Sinatra.
+Demo: https://calm-bastion-1929.herokuapp.com/
 
 This app display your FourSquare checkins on Google Maps.
 
