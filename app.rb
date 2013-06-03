@@ -27,25 +27,25 @@ get '/authenticate' do
 		json = getJSON("https://foursquare.com/oauth2/access_token?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&grant_type=authorization_code&redirect_uri=" + REDIRECT_URI + "&code=" + params[:code])
 		session[:token] = JSON.parse(json)['access_token']
 
-# XXX : do i need id ?		
+# XXX : do i need id ?
 #		json = getJSON("https://api.foursquare.com/v2/users/self?oauth_token=" + token)
 		#puts json
 #		id = JSON.parse(json)['response']['user']['id']
 
 # Store id and token in file
-#		File.open('usersToken.txt', 'w') do |f|  
+#		File.open('usersToken.txt', 'w') do |f|
 #    		f.puts id + " : " + token + "\n"
-#		end 
-		
-		# XXX : must i store ids and tokens ? 
-		# as said in https://developer.foursquare.com/overview/auth 
+#		end
+
+		# XXX : must i store ids and tokens ?
+		# as said in https://developer.foursquare.com/overview/auth
 		# "4. Save this access token for this user in your database."
 
 		# or use session to store token ?
 
 	redirect "/app"
 
-	else 
+	else
 		# Authorize app
 		redirect "https://fr.foursquare.com/oauth2/authenticate?client_id=" + CLIENT_ID + "&response_type=code&redirect_uri=" + REDIRECT_URI
 	end
@@ -53,7 +53,7 @@ get '/authenticate' do
 
 end
 
-get '/app' do	
+get '/app' do
 	if session[:token]
 		@venues = getJSON("https://api.foursquare.com//v2/users/self/venuehistory?oauth_token=" + session[:token])
 		erb :app
@@ -62,11 +62,11 @@ get '/app' do
 	end
 end
 
-get '/test' do	
+get '/test' do
 	if session[:token]
 		checkin = getJSON("https://api.foursquare.com//v2/users/self/checkins?oauth_token=" + session[:token] + "&limit=1")
 		nbCheckins = JSON.parse(checkin)['response']['checkins']['count'] # here i have the total number of checkins
-		
+
 		limit = 250
 		checkins = []
 
@@ -78,7 +78,7 @@ get '/test' do
    			checkins.push checkin
    		end
 		end
-		
+
 		#puts "Checkins : #{checkins.length}"
 
 

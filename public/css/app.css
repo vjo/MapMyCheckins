@@ -22,12 +22,13 @@ h1 {
 }
 
 .map {
-	width:100%; 
-	height:520px; 
+	width:100%;
+	height:520px;
 	margin:auto;
 	margin-top: 40px;
 }
 
-footer img {
-	width: 260px;
+.navbar img {
+	width: 240px;
+    padding-top: 8px;
 }
